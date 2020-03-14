@@ -2,6 +2,8 @@ import pygame
 import pyautogui
 import webbrowser
 import math
+import speech_recognition as sr
+from playsound import playsound
 
 # # Define some colors.
 BLACK = pygame.Color('black')
@@ -141,6 +143,19 @@ while not done:
                 pyautogui.click()
             elif i==5 and button==1:
                 pyautogui.click(button="right")
+            elif i==7 and button==1:
+                playsound("files/abc.mp3")
+                r = sr.Recognizer()
+                with sr.Microphone() as source:
+                    print("Say something!")
+                    audio = r.listen(source)
+                try:
+                    pyautogui.write(r.recognize_sphinx(audio))
+                    # print("Sphinx thinks you said " + )
+                except sr.UnknownValueError:
+                    print("Sphinx could not understand audio")
+                except sr.RequestError as e:
+                    print("Sphinx error; {0}".format(e))
         textPrint.unindent()
 
         hats = joystick.get_numhats()
